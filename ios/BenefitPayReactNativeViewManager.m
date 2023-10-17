@@ -1,0 +1,14 @@
+#import <React/RCTViewManager.h>
+
+@interface RCT_EXTERN_MODULE(BenefitPayReactNativeViewManager, RCTViewManager)
+
+RCT_EXPORT_VIEW_PROPERTY(config, NSDictionary)
+RCT_EXPORT_VIEW_PROPERTY(onErrorCallback, RCTDirectEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onSuccessCallback, RCTDirectEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onOrderCreatedCallback, RCTDirectEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onChargeCreatedCallback, RCTDirectEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onReadyCallback, RCTDirectEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onClickedCallback, RCTDirectEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onCanceledCallback, RCTDirectEventBlock)
+
+@end
