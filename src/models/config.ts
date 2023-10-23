@@ -38,7 +38,6 @@ export type Name = {
 export type Customer = {
   id?: String;
   name?: Name[];
-  nameOnCard?: String;
   editable?: boolean;
   contact?: Contact;
 };

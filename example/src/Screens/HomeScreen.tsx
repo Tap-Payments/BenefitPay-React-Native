@@ -17,6 +17,7 @@ import BenefitPayView, {
   Theme,
   type Config,
 } from 'benefit-pay-react-native';
+
 type Props = NativeStackScreenProps<RootStackParamList, 'HomeScreen'>;
 
 function HomeScreen({ navigation }: Props) {
@@ -43,7 +44,6 @@ function HomeScreen({ navigation }: Props) {
       hashString: 'OSAMA',
     },
     customer: {
-      nameOnCard: 'Tap Payments',
       editable: true,
       id: '',
       name: [

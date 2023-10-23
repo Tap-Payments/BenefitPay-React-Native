@@ -42,7 +42,6 @@ function ConfigScreen({ route, navigation }: Props) {
 
   useEffect(() => {
     setValue('key', config.operator.publicKey);
-    setValue('nameOnCard', config.customer.nameOnCard);
     setValue('editable', config.customer.editable);
     setValue('customerId', config.customer.id);
     setValue(
@@ -90,7 +89,6 @@ function ConfigScreen({ route, navigation }: Props) {
     config.customer.editable,
     config.customer.id,
     config.customer.name,
-    config.customer.nameOnCard,
     config.interface?.colorStyle,
     config.interface?.edges,
     config.interface?.loader,
@@ -124,7 +122,6 @@ function ConfigScreen({ route, navigation }: Props) {
       },
       customer: {
         editable: data.editable,
-        nameOnCard: data.nameOnCard,
         id: data.customerId,
         name: [
           {
