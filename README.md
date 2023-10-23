@@ -72,7 +72,7 @@ Each parameter is linked to the  [reference](https://developers.tap.company/docs
 
 |Configuration|Description | Required | Type| Sample
 |--|--|--| --|--|
-| operator| This is the `Key` that you will get after registering you bundle id. | True  | `String`| `let operator  {publicKey: 'pk_test_YhUjg9PNT8oDlKJ1aE2fMRz7'}` |
+| operator| This is the `Key` that you will get after registering you bundle id. | True  | `String`| `let operator  {publicKey: 'pk_test_YhUjg9PNT8oDlKJ1aE2fMRz7', hashString:''}` |
 | order| This is the `order id` that you created before or `amount` and `currency` to generate a new order.   It will be linked this token. | True  | `Order`| ` let order: = { amount: 1, currency: TapCurrencyCode.SAR, description: '', id: '', , reference : ''}` |
 
 
@@ -181,7 +181,7 @@ const config = React.useMemo(() => {
       },
       operator: {
         publicKey: 'pk_test_YhUjg9PNT8oDlKJ1aE2fMRz7',
-        hashString: 'OSAMA',
+        hashString: '',
       },
       customer: {
         editable: true,
@@ -274,7 +274,9 @@ Below you will find more details about each parameter shared in the above tables
 2.  Type: string (_required_)
 3.  Fields:
     -   **publicKey**  
-        _Definition_: This is a unique public key that you will receive after creating an account with Tap which is considered a reference to identify you as a merchant. You will receive 2 public keys, one for sandbox/testing and another one for production.  
+        _Definition_: This is a unique public key that you will receive after creating an account with Tap which is considered a reference to identify you as a merchant. You will receive 2 public keys, one for sandbox/testing and another one for production.
+    -   **hashString**  
+        _Definition_: This is a unique string value, you generate from the details of the transaction. To make sure, if anything got tampered with from the transaction's details, the transaction will be rejected. it is required for live transactions.
 4. Example:
         
 ```ts
