@@ -717,7 +717,7 @@ const interface = {
         // For amounts, you will need to make sure they are formatted in a way to have the correct number of decimal points. For BHD we need them to have 3 decimal points
         const formattedAmount = amount.toFixed(3);
         // Let us format the string that we will hash
-        const toBeHashed = `x_publickey${publicKey}x_amount${formattedAmount}x_currency${currency}x_transaction${transactionReference}x_post${postUrl}`;
+        const toBeHashed = 'x_publickey${publicKey}x_amount${formattedAmount}x_currency${currency}x_transaction${transactionReference}x_post${postUrl}';
         // let us generate the hash string now using the HMAC SHA256 algorithm
         const hashDigest = sha256(toBeHashed);
         const hmacDigest = Base64.stringify(hmacSHA256(hashDigest, secretKey));
