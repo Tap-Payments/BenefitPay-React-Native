@@ -14,7 +14,7 @@ class BenefitPayReactNativeViewManager: RCTViewManager {
 
 class BenefitPayReactNativeView : UIView {
     
-    var benefitPayButton: BenefitPayButton!
+    var benefitPayButton: PayButtonView!
     let controller = RCTPresentedViewController()
     
     @objc var onErrorCallback: RCTDirectEventBlock?
@@ -38,7 +38,7 @@ class BenefitPayReactNativeView : UIView {
     //MARK: - Private methods
     /// Used as a consolidated method to do all the needed steps upon creating the view
     private func commonInit() {
-        benefitPayButton = BenefitPayButton()
+        benefitPayButton = PayButtonView()
         self.addSubview(benefitPayButton)
         setupConstraints()
     }
@@ -74,13 +74,13 @@ class BenefitPayReactNativeView : UIView {
     
     @objc var config: [String:Any] = [:] {
         didSet {
-            benefitPayButton.initBenefitPayButton(configDict: config, delegate: self)
+            benefitPayButton.initPayButton(configDict: config, delegate: self, payButtonType: PayButtonTypeEnum.BenefitPay)
         }
     }
 }
 
 
-extension BenefitPayReactNativeView: BenefitPayButtonDelegate {
+extension BenefitPayReactNativeView: PayButtonDelegate {
     
     func onReady() {
         guard let onReadyCallback = onReadyCallback else {

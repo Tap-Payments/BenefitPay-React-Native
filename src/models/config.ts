@@ -1,10 +1,4 @@
-import type {
-  ColorStyle,
-  Edges,
-  Locale,
-  TapCurrencyCode,
-  Theme,
-} from './enums';
+import type { Edges, Locale, TapCurrencyCode } from './enums';
 
 export type Merchant = { id: String };
 export type PaymentAgreement = {
@@ -19,10 +13,7 @@ export type Phone = { countryCode: String; number: String };
 
 export type InterfaceConfig = {
   locale: Locale;
-  theme: Theme;
   edges: Edges;
-  loader: boolean;
-  colorStyle: ColorStyle;
 };
 
 export type Contact = {
@@ -37,7 +28,7 @@ export type Name = {
 };
 export type Customer = {
   id?: String;
-  name?: Name[];
+  names?: Name[];
   editable?: boolean;
   contact?: Contact;
 };
@@ -61,10 +52,10 @@ export type Post = {
 
 export type Config = {
   merchant?: Merchant;
-  order: Order;
-  invoice?: Invoice;
   post?: Post;
   operator: { publicKey: string; hashString: string };
   interface?: InterfaceConfig;
   customer: Customer;
+  transaction: { amount: number; currency: TapCurrencyCode };
+  reference: { transaction: string; order: string };
 };

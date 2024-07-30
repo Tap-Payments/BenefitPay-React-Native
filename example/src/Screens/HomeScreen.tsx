@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import * as React from 'react';
 import {
   SafeAreaView,
@@ -10,11 +11,9 @@ import type { RootStackParamList } from './Screens.types';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useState } from 'react';
 import BenefitPayView, {
-  ColorStyle,
   Edges,
   Locale,
   TapCurrencyCode,
-  Theme,
   type Config,
 } from 'benefit-pay-react-native';
 
@@ -22,53 +21,29 @@ type Props = NativeStackScreenProps<RootStackParamList, 'HomeScreen'>;
 
 function HomeScreen({ navigation }: Props) {
   const [config, setConfigState] = useState<Config>({
-    merchant: {
-      id: '',
+    operator: { publicKey: 'pk_test_Wa4ju8UC1zoi0HhST9yO3M6n', hashString: '' },
+    transaction: {
+      amount: 12,
+      currency: TapCurrencyCode.BHD,
     },
-    order: {
-      reference: '',
-      amount: 1,
-      currency: TapCurrencyCode.SAR,
-      description: '',
-      id: '',
-      metadata: {},
+    reference: {
+      transaction: 'transaction',
+      order: 'order',
     },
-    invoice: {
-      id: 'Map to authenticate.reference.invoice',
-    },
-    post: {
-      url: 'Map to authenticate.reference.post',
-    },
-    operator: {
-      publicKey: 'pk_test_YhUjg9PNT8oDlKJ1aE2fMRz7',
-      hashString: 'OSAMA',
-    },
+    merchant: { id: '' },
     customer: {
-      editable: true,
       id: '',
-      name: [
-        {
-          first: 'Tap',
-          lang: Locale.en,
-          middle: 'Company',
-          last: 'Payments',
-        },
-      ],
+      names: [{ lang: Locale.en, first: 'TAP', middle: '', last: 'PAYMENTS' }],
       contact: {
-        phone: {
-          number: '88888888',
-          countryCode: '+965',
-        },
-        email: 'tappayments@tap.company',
+        email: 'tap@tap.company',
+        phone: { countryCode: '+965', number: '88888888' },
       },
     },
     interface: {
-      loader: true,
       locale: Locale.en,
-      theme: Theme.dark,
       edges: Edges.curved,
-      colorStyle: ColorStyle.colored,
     },
+    post: { url: '' },
   });
 
   const [response, setResponse] = useState<String>('');
@@ -81,7 +56,6 @@ function HomeScreen({ navigation }: Props) {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View
-        // eslint-disable-next-line react-native/no-inline-styles
         style={{
           flex: 1,
           alignItems: 'center',
@@ -98,6 +72,7 @@ function HomeScreen({ navigation }: Props) {
               )} \n =====onSuccessEnd===== \n`
             );
           }}
+          // eslint-disable-next-line react-native/no-inline-styles
           style={{ width: '100%' }}
           config={config}
           onReady={() => {

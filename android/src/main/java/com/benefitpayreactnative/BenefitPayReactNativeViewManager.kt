@@ -13,9 +13,10 @@ import com.facebook.react.uimanager.SimpleViewManager
 import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.annotations.ReactProp
 import com.facebook.react.uimanager.events.RCTEventEmitter
-import company.tap.tapcardformkit.open.TapBenefitPayStatusDelegate
-import company.tap.tapcardformkit.open.web_wrapper.BeneiftPayConfiguration
-import company.tap.tapcardformkit.open.web_wrapper.TapBenefitPay
+import company.tap.tapbenefitpay.open.TapBenefitPayStatusDelegate
+import company.tap.tapbenefitpay.open.web_wrapper.BeneiftPayConfiguration
+import company.tap.tapbenefitpay.open.web_wrapper.TapBenefitPay
+
 
 class BenefitPayReactNativeViewManager : SimpleViewManager<View>() {
   override fun getName() = "BenefitPayReactNativeView"

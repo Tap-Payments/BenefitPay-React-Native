@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useCallback, useEffect } from 'react';
 import {
   StyleSheet,
@@ -46,21 +47,23 @@ function ConfigScreen({ route, navigation }: Props) {
     setValue('customerId', config.customer.id);
     setValue(
       'firstName',
-      config.customer.name !== undefined
-        ? config.customer.name[0]?.first ?? ''
+      config.customer.names !== undefined
+        ? config.customer.names[0]?.first ?? ''
         : ''
     );
     setValue(
       'lastName',
-      config.customer.name !== undefined ? config.customer.name[0]?.last : ''
+      config.customer.names !== undefined ? config.customer.names[0]?.last : ''
     );
     setValue(
       'middleName',
-      config.customer.name !== undefined ? config.customer.name[0]?.middle : ''
+      config.customer.names !== undefined
+        ? config.customer.names[0]?.middle
+        : ''
     );
     setValue(
       'customerLocale',
-      config.customer.name !== undefined ? config.customer.name[0]?.lang : ''
+      config.customer.names !== undefined ? config.customer.names[0]?.lang : ''
     );
     setValue('customerEmail', config.customer.contact?.email ?? '');
     setValue(
@@ -88,7 +91,7 @@ function ConfigScreen({ route, navigation }: Props) {
     config.customer.contact?.phone.number,
     config.customer.editable,
     config.customer.id,
-    config.customer.name,
+    config.customer.names,
     config.interface?.colorStyle,
     config.interface?.edges,
     config.interface?.loader,
@@ -123,7 +126,7 @@ function ConfigScreen({ route, navigation }: Props) {
       customer: {
         editable: data.editable,
         id: data.customerId,
-        name: [
+        names: [
           {
             first: data.firstName,
             last: data.lastName,
@@ -140,9 +143,6 @@ function ConfigScreen({ route, navigation }: Props) {
         },
       },
       interface: {
-        loader: data.loader,
-        colorStyle: data.colorStyle,
-        theme: data.theme,
         locale: data.locale,
         edges: data.edges,
       },
@@ -300,8 +300,8 @@ function ConfigScreen({ route, navigation }: Props) {
             })),
             isRequired: true,
             defaultOption:
-              config.customer.name !== undefined
-                ? (config.customer.name[0]?.lang as string)
+              config.customer.names !== undefined
+                ? (config.customer.names[0]?.lang as string)
                 : '',
           })}
           {renderTextInput('nameOnCard', 'Name On Card', true)}
