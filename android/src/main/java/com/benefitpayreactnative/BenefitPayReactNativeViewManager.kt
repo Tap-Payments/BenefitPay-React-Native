@@ -44,7 +44,9 @@ class BenefitPayReactNativeViewManager : SimpleViewManager<View>() {
     print(config.toString())
     BeneiftPayConfiguration.configureWithTapBenfitPayDictionaryConfiguration(view.context, customView ,config.toHashMap(), object :
       TapBenefitPayStatusDelegate {
-      override fun onChargeCreated(data: String) {
+
+
+      override fun onBenefitPayChargeCreated(data: String) {
         val event = Arguments.createMap().apply {
           putString("data", data)
         }
@@ -55,7 +57,9 @@ class BenefitPayReactNativeViewManager : SimpleViewManager<View>() {
         Log.e("configTest", data)
       }
 
-      override fun onOrderCreated(data: String) {
+
+
+      override fun onBenefitPayOrderCreated(data: String) {
         val event = Arguments.createMap().apply {
           putString("data", data)
         }
@@ -65,7 +69,10 @@ class BenefitPayReactNativeViewManager : SimpleViewManager<View>() {
           .receiveEvent(view.id, "onOrderCreatedCallback", event)
         Log.e("configTest", data)
       }
-      override fun onError(error: String) {
+
+
+
+      override fun onBenefitPayError(error: String) {
         val event = Arguments.createMap().apply {
           putString("data", error)
         }
@@ -76,7 +83,9 @@ class BenefitPayReactNativeViewManager : SimpleViewManager<View>() {
         Log.e("configTest", error)
       }
 
-      override fun onCancel() {
+
+
+      override fun onBenefitPayCancel() {
         val event = Arguments.createMap().apply {
           putString("data","")
         }
@@ -86,7 +95,11 @@ class BenefitPayReactNativeViewManager : SimpleViewManager<View>() {
           .receiveEvent(view.id, "onCanceledCallback", event)
         Log.e("configTest", "onCancel")
       }
-      override fun onReady() {
+
+
+
+
+      override fun onBenefitPayReady() {
         val event = Arguments.createMap().apply {
           putString("data","")
         }
@@ -97,7 +110,9 @@ class BenefitPayReactNativeViewManager : SimpleViewManager<View>() {
         Log.e("configTest", "onReady")
       }
 
-      override fun onClick() {
+
+
+      override fun onBenefitPayClick() {
         val event = Arguments.createMap().apply {
           putString("data","")
         }
@@ -108,7 +123,10 @@ class BenefitPayReactNativeViewManager : SimpleViewManager<View>() {
         Log.e("configTest", "onClick")
       }
 
-      override fun onSuccess(data: String) {
+
+     
+
+      override fun onBenefitPaySuccess(data: String) {
         val event = Arguments.createMap().apply {
           putString("data",data)
         }
