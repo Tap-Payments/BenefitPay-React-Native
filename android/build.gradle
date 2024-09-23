@@ -108,6 +108,6 @@ dependencies {
   //noinspection GradleDynamicVersion
   implementation "com.facebook.react:react-native:+"
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-  implementation 'com.github.Tap-Payments:BenefitPay-Android:0.0.19'
+  implementation 'com.github.Tap-Payments:BenefitPay-Android:0.0.20'
 }
 
