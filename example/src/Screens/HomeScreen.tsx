@@ -14,36 +14,54 @@ import BenefitPayView, {
   Edges,
   Locale,
   TapCurrencyCode,
-  type Config,
+  type ConfigSettings,
 } from 'benefit-pay-react-native';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'HomeScreen'>;
 
 function HomeScreen({ navigation }: Props) {
-  const [config, setConfigState] = useState<Config>({
-    operator: { publicKey: 'pk_test_Wa4ju8UC1zoi0HhST9yO3M6n', hashString: '' },
-    transaction: {
-      amount: 12,
-      currency: TapCurrencyCode.BHD,
-    },
-    reference: {
-      transaction: 'transaction',
-      order: 'order',
-    },
-    merchant: { id: '' },
-    customer: {
+  const [config, setConfig] = useState<ConfigSettings>({
+    merchant: {
       id: '',
-      names: [{ lang: Locale.en, first: 'TAP', middle: '', last: 'PAYMENTS' }],
+    },
+    redirect: 'tapredirectionwebsdk://',
+    customer: {
+      names: [
+        {
+          middle: 'Middle',
+          last: 'Payments',
+          lang: 'en',
+          first: 'Tap',
+        },
+      ],
       contact: {
-        email: 'tap@tap.company',
-        phone: { countryCode: '+965', number: '88888888' },
+        phone: {
+          number: '66178990',
+          countryCode: '965',
+        },
+        email: 'email@email.com',
       },
+      id: null,
     },
     interface: {
-      locale: Locale.en,
-      edges: Edges.curved,
+      edges: Edges.straight,
+      locale: Locale.ar,
     },
+    reference: { transaction: 'transaction', order: '12' },
+    metadata: '',
     post: { url: '' },
+    transaction: {
+      amount: '1',
+      currency: TapCurrencyCode.BHD,
+    },
+    androidOperator: {
+      hashString: '',
+      publicKey: 'pk_live_3zIsCFeStGLv8DNd9m054bYc',
+    },
+    iOSOperator: {
+      hashString: '',
+      publicKey: 'pk_live_3zIsCFeStGLv8DNd9m054bYc',
+    },
   });
 
   const [response, setResponse] = useState<String>('');
@@ -122,7 +140,7 @@ function HomeScreen({ navigation }: Props) {
           onPress={() => {
             navigation.navigate('ConfigScreen', {
               config,
-              setConfig: setConfigState,
+              setConfig: setConfig,
             });
           }}
         >

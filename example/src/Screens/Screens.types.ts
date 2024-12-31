@@ -1,6 +1,9 @@
-import type { Config } from 'benefit-pay-react-native';
+import type { ConfigSettings } from 'benefit-pay-react-native';
 
 export type RootStackParamList = {
-  ConfigScreen: { config: Config; setConfig: (config: Config) => void };
+  ConfigScreen: {
+    config: ConfigSettings;
+    setConfig: (config: ConfigSettings) => void;
+  };
   HomeScreen: undefined;
 };

@@ -73,7 +73,7 @@ Each parameter is linked to the  [reference](https://developers.tap.company/docs
 |Configuration|Description | Required | Type| Sample
 |--|--|--| --|--|
 | operator| This is the `Key` that you will get after registering you bundle id. | True  | `String`| `let operator  {publicKey: 'pk_test_YhUjg9PNT8oDlKJ1aE2fMRz7', hashString:''}` |
-| order| This is the `order id` that you created before or `amount` and `currency` to generate a new order.   It will be linked this token. | True  | `Order`| ` let order: = { amount: 1, currency: TapCurrencyCode.SAR, description: '', id: '', , reference : ''}` |
+| Transaction| `amount` and `currency` to generate a new transaction. It will be linked this token. | True  | `Transaction`| ` let order: = { amount: 1, currency: TapCurrencyCode.SAR, description: '', id: '', , reference : ''}` |
 
 
 ## Simple widget initialisation
@@ -102,14 +102,23 @@ function MinRequirement() {
         }}
         style={{ width: '100%' }}
         config={{
+          androidOperator: {
+            hashString: '',
+            publicKey: 'pk_live_********',
+          },
+          iOSOperator: {
+            hashString: '',
+            publicKey: 'pk_live_********',
+          },
           merchant: {
             id: '',
           },
-          order: {
+          transaction: {
             amount: 1,
-            currency: TapCurrencyCode.SAR,
+            currency: TapCurrencyCode.BHD,
           },
           customer: {
+            id:"",
             name: [
               {
                 first: 'Tap',
@@ -150,66 +159,61 @@ Each parameter is linked to the  [reference]()  section, which provides a more i
 
 |Configuration|Description | Required | Type| Sample
 |--|--|--| --|--|
-| operator| This is the `Key` that you will get after registering you bundle id. | operator|It has the key obtained after registering your package name, also known as Public key. Also, the [hashString](https://developers.tap.company/docs/benefit-pay-ios#generate-the-hash-string) value which is used to validate live charges. | True  | `Dictionary`| `let operator:[String:Any]: ["publicKey":"pk_test_YhUjg9PNT8oDlKJ1aE2fMRz7", "hashString":""]`  |
-| order| This is the `order id` that you created before or `amount` and `currency` to generate a new order.   It will be linked this token. | True  | `Order`| ` let order: = { amount: 1, currency: TapCurrencyCode.SAR, description: '', id: '', , reference : ''}` |
-| invoice| This is the `invoice id` that you want to link this token to if any. | False  | `Invoice`| ` let invoice = {"id":""}` |
-| merchant| This is the `Merchant id` that you will get after registering you bundle id. | True  | `Merchant`| ` let merchant = {"id":""}` |
-| customer| The customer details you want to attach to this tokenization process. | True  | `Customer`| ` let customer = {"id":"", "name":{{"lang":"en","first":"TAP","middle":"","last":"PAYMENTS"}}, "nameOnCard":"TAP PAYMENTS", "editble":true, "contact":{"email":"tap@tap.company", "phone":{"countryCode":"+965","number":"88888888"}}}` |
-| `Interface`| ` let interface = {locale: Locale.en, theme: Theme.dark, edges: Edges.curved, cardDirection: Direction.ltr, colorStyle: 'monochrome', "loader": true}` |
-| post| This is the `webhook` for your server, if you want us to update you server to server. | False  | `Post`| ` let post = {"url":""}` |
-
+| operator| This is the `Key` that you will get after registering you bundle id. | True|It has the key obtained after registering your package name, also known as Public key. Also, the [hashString](https://developers.tap.company/docs/benefit-pay-ios#generate-the-hash-string) value which is used to validate live charges. | `androidOperator: {hashString: '',publicKey: 'pk_live_********',},iOSOperator: {hashString: '',publicKey: 'pk_live_********',},`  | `Dictionary`| `let operator:[String:Any]: ["publicKey":"pk_test_YhUjg9PNT8oDlKJ1aE2fMRz7", "hashString":""]`  |
+| transaction| `amount` and `currency` to generate a new transaction.   It will be linked this token. | True  | `transaction`| ` let order: = { amount: 1, currency: TapCurrencyCode.SAR, description: '', id: '', , reference : ''}` |
+ |merchant| This is the `Merchant id` that you will get after registering you bundle id. | True  | `Merchant`| ` let merchant = {"id":""}` |
+| customer| The customer details you want to attach to this tokenization process. | True  | `Customer`| `{names: [{middle: 'Middle',last: 'Payments',lang: 'en',first: 'Tap',},],contact: {phone: {number: '66178990',countryCode: '965',},email: 'email@email.com',},id: null,},` |
+| Interface|customize look and feel|True|| ` let interface = interface: {edges: Edges.straight,locale: Locale.ar,},` |
+| post| This is the `webhook` for your server, if you want us to update you server to server. | true  | `Post`| ` let post = {"url":""}` |
+| redirect| redirect url. | true  | `redirect`| string |
+| metadata| metadata. | true  | `metadata`| string |
+| reference| transaction reference. | true  | `reference`| ` { transaction: 'transaction', order: '12' }` |
 ## Advanced configuration initiliasation
 ```Ts
 const config = React.useMemo(() => {
-    return {
-      merchant: {
-        id: '',
-      },
-      order: {
-        reference: '',
-        amount: 1,
-        currency: TapCurrencyCode.SAR,
-        description: '',
-        id: '',
-        metadata: {},
-      },
-      invoice: {
-        id: 'Map to authenticate.reference.invoice',
-      },
-      post: {
-        url: 'Map to authenticate.reference.post',
-      },
-      operator: {
-        publicKey: 'pk_test_YhUjg9PNT8oDlKJ1aE2fMRz7',
-        hashString: '',
-      },
-      customer: {
-        editable: true,
-        id: '',
-        name: [
-          {
-            first: 'Tap',
-            lang: Locale.en,
-            middle: 'Company',
-            last: 'Payments',
-          },
-        ],
-        contact: {
-          phone: {
-            number: '88888888',
-            countryCode: '+965',
-          },
-          email: 'tappayments@tap.company',
+    return   {
+    merchant: {
+      id: '',
+    },
+    redirect: 'tapredirectionwebsdk://',
+    customer: {
+      names: [
+        {
+          middle: 'Middle',
+          last: 'Payments',
+          lang: 'en',
+          first: 'Tap',
         },
+      ],
+      contact: {
+        phone: {
+          number: '66178990',
+          countryCode: '965',
+        },
+        email: 'email@email.com',
       },
-      interface: {
-        loader: true,
-        locale: Locale.en,
-        theme: Theme.dark,
-        edges: Edges.curved,
-        colorStyle: ColorStyle.colored,
-      },
-    };
+      id: null,
+    },
+    interface: {
+      edges: Edges.straight,
+      locale: Locale.ar,
+    },
+    reference: { transaction: 'transaction', order: '12' },
+    metadata: '',
+    post: { url: '' },
+    transaction: {
+      amount: '1',
+      currency: TapCurrencyCode.BHD,
+    },
+    androidOperator: {
+      hashString: '',
+      publicKey: 'pk_live_********',
+    },
+    iOSOperator: {
+      hashString: '',
+      publicKey: 'pk_live_********',
+    },
+  };
   }, []);
 ```
 ## Advanced widget initialisation
@@ -280,31 +284,21 @@ Below you will find more details about each parameter shared in the above tables
 4. Example:
         
 ```ts
-const operator = {publicKey : "pk_test_YhUjg9PNT8oDlKJ1aE2fMRz7", hashString:"" }
+const operator = {  publicKey: 'pk_live_********', hashString:"" }
 ```
-##  order []()
+##  transaction []()
 
 1.  Definition: This defined the details of the order that you are trying to purchase, in which you need to specify some details like the id, amount, currency ...
 2.  Type: Dictionary, (_required_)
 3.  Fields:
-    -   **id**  
-        _Definition:_  Pass the order ID created for the order you are trying to purchase, which will be available in your database.  
-        Note: This field can be empty  
     -   **currency**  
         _Definition:_  The currency which is linked to the order being paid.  
     -   **amount**  
         _Definition:_  The order amount to be paid by the customer.  
         Note: Minimum amount to be added is 0.1.  
-    -   **description**  
-        _Definition:_  Order details, which defines what the customer is paying for or the description of the service you are providing.  
-    -   **reference**  
-        _Definition:_  This will be the order reference present in your database in which the paying is being done for.  
 4.  _Example:_
   ```ts
-  const order = [
-      { id : "", amount: 1, currency: "SAR", description: "Authentication description",
-      "reference": "",
-    }
+  const order = {  amount: "1", currency: "SAR"}
   ```
 
 ##  merchant
@@ -321,21 +315,6 @@ const operator = {publicKey : "pk_test_YhUjg9PNT8oDlKJ1aE2fMRz7", hashString:"" 
 	const merchant = {id:""}
 ```
         
-
-##  invoice []()
-
-1.  Definition: After the token is generated, you can use it to pay for any invoice. Each invoice will have an invoice ID which you can add here using the SDK.  
-    Note: An invoice will first show you a receipt/summary of the order you are going to pay for as well as the amount, currency, and any related field before actually opening the payment form and completing the payment.
-2.  Type: Dictionary (_optional_)
-3.  Fields:
-    -   **id**  
-        _Definition:_  Unique Invoice ID which we are trying to pay.  
-        _Example:_
-```ts
-	const invoice = {id:""}
-```
-        
-
 ## customer []()
 
 1.  Definition: Here, you will collect the information of the customer that is paying..
@@ -396,11 +375,9 @@ const customer = {
 
 ##  interface []()
 
-1.  Definition: This will help you control the layout (UI) of the payment form, like changing the theme light to dark, the language used (en or ar), ...
+1.  Definition: This will help you control the layout (UI) of the payment form, the language used (en or ar), ...
 2.  Type: Dictionary (_optional_)
 3.  Fields:
-    -   **loader**  
-        _Definition:_  A boolean to indicate wether or not you want to show a loading view on top of the benefit button while it is performing api requests.  
     -   **locale**  
         _Definition:_  The language of the benefit button. Accepted values as of now are:  
         _Possible Values:_
@@ -408,35 +385,17 @@ const customer = {
         1.  **en**(for english)
         2.  **ar**(for arabic).  
         
-    -   **theme**  
-        _Definition:_  The display styling of the benefit button. Accepted values as of now are:  
-        _Options:_
-        
-        1.  **light**
-        2.  **dark**
-        3.  **dynamic**  ( follow the device's display style )  
-        
     -   **edges**  
         _Definition:_  Control the edges of the payment form.  
         _Possible Values:_
         
         1.  **curved**
-        2.  **flat**  
-
-    -   **colorStyle**  
-        _Definition:_  How do you want the icons rendered inside the benefit button
-        _Possible Values:_
-        
-        1.  **colored**
-        2.  **monochrome**  
+        2.  **straight**  
 4.  _Example:_
 ```ts
 const interface = {
-      loader: true,
       locale: Locale.en,
-      theme: Theme.dark,
-      edges: Edges.curved,
-      colorStyle: ColorStyle.colored,
+      edges: Edges.straight,
     } 
 ```
         
@@ -454,7 +413,35 @@ const interface = {
         _Example:_
 ```ts
 	const post = {id:""}
-```        
+```    
+
+##  redirect []()
+
+1.  Definition: Redirection Url.
+    
+2.  Type: String 
+    
+
+  
+    _Example:_
+```ts
+	const redirect: 'tapredirectionwebsdk://'
+```    
+
+
+##  metadata []()
+
+1.  Definition: transaction meta data.
+    
+2.  Type: String 
+    
+
+  
+    _Example:_
+```ts
+	const metadata: 'metadata'
+```    
+
 
 # Expected Callbacks Responses[]()
 

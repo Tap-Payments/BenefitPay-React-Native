@@ -1,61 +1,77 @@
 import type { Edges, Locale, TapCurrencyCode } from './enums';
 
-export type Merchant = { id: String };
-export type PaymentAgreement = {
-  id: String;
-  contract: Contract;
-};
-export type Contract = {
-  id: String;
-};
+interface Name {
+  middle?: string;
+  last?: string;
+  lang?: string;
+  first?: string;
+}
 
-export type Phone = { countryCode: String; number: String };
+interface Phone {
+  number: string;
+  countryCode: string;
+}
 
-export type InterfaceConfig = {
-  locale: Locale;
-  edges: Edges;
-};
-
-export type Contact = {
-  email: String;
+interface Contact {
   phone: Phone;
-};
-export type Name = {
-  lang: Locale;
-  first: String;
-  last: String;
-  middle: String;
-};
-export type Customer = {
-  id?: String;
+  email: string;
+}
+
+interface CustomerBase {
+  id: string | null;
+}
+
+interface CustomerWithId extends CustomerBase {
+  id: string;
   names?: Name[];
-  editable?: boolean;
   contact?: Contact;
-};
+}
 
-export type Order = {
-  id?: String;
-  amount?: number;
-  currency?: TapCurrencyCode;
-  description?: String;
-  reference?: String;
-  metadata?: Object;
-};
+interface CustomerWithoutId extends CustomerBase {
+  id: null;
+  names: Name[];
+  contact: Contact;
+}
 
-export type Invoice = {
-  id: String;
-};
+type Customer = CustomerWithId | CustomerWithoutId;
 
-export type Post = {
-  url: String;
-};
+interface Reference {
+  transaction: string;
+  order: string;
+}
 
-export type Config = {
-  merchant?: Merchant;
-  post?: Post;
-  operator: { publicKey: string; hashString: string };
-  interface?: InterfaceConfig;
+interface Post {
+  url: string;
+}
+
+interface Transaction {
+  amount: string;
+  currency: TapCurrencyCode;
+}
+
+export interface Operator {
+  hashString: string;
+  publicKey: string;
+}
+
+interface Interface {
+  edges: Edges;
+  locale: Locale;
+}
+
+interface Merchant {
+  id: string;
+}
+
+export interface ConfigSettings {
+  merchant: Merchant;
+  redirect: string;
   customer: Customer;
-  transaction: { amount: number; currency: TapCurrencyCode };
-  reference: { transaction: string; order: string };
-};
+  interface: Interface;
+  reference: Reference;
+  metadata: string;
+  post: Post;
+  transaction: Transaction;
+  iOSOperator: Operator;
+  androidOperator: Operator;
+}

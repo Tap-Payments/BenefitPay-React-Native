@@ -1,5 +1,4 @@
-// @ts-nocheck
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   StyleSheet,
   TextInput,
@@ -7,7 +6,6 @@ import {
   View,
   TouchableOpacity,
   SafeAreaView,
-  Switch,
   ScrollView,
   type KeyboardTypeOptions,
 } from 'react-native';
@@ -21,132 +19,68 @@ import {
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { RootStackParamList } from './Screens.types';
 import {
-  ColorStyle,
   Edges,
   Locale,
-  Theme,
   TapCurrencyCode,
-  type Config,
+  type ConfigSettings,
 } from 'benefit-pay-react-native';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ConfigScreen'>;
 
 function ConfigScreen({ route, navigation }: Props) {
   const { config, setConfig } = route.params;
-
+  const [configState, _] = useState<ConfigSettings>(config);
   const {
     control,
     handleSubmit,
     formState: { errors },
-    setValue,
   } = useForm();
 
-  useEffect(() => {
-    setValue('key', config.operator.publicKey);
-    setValue('editable', config.customer.editable);
-    setValue('customerId', config.customer.id);
-    setValue(
-      'firstName',
-      config.customer.names !== undefined
-        ? config.customer.names[0]?.first ?? ''
-        : ''
-    );
-    setValue(
-      'lastName',
-      config.customer.names !== undefined ? config.customer.names[0]?.last : ''
-    );
-    setValue(
-      'middleName',
-      config.customer.names !== undefined
-        ? config.customer.names[0]?.middle
-        : ''
-    );
-    setValue(
-      'customerLocale',
-      config.customer.names !== undefined ? config.customer.names[0]?.lang : ''
-    );
-    setValue('customerEmail', config.customer.contact?.email ?? '');
-    setValue(
-      'customerCountryCode',
-      config.customer.contact?.phone.number ?? ''
-    );
-    setValue('customerPhone', config.customer.contact?.phone.countryCode ?? '');
-    setValue('merchantId', config.merchant?.id ?? '');
-    setValue('invoice', config.invoice?.id);
-    setValue('post', config.post?.url);
-    setValue('amount', config.order.amount?.toString() ?? '1');
-    setValue('orderDescription', config.order.description);
-    setValue('orderId', config.order.id);
-    setValue('orderReference', config.order.reference);
-    setValue('currency', config.order.currency);
-
-    setValue('edges', config.interface?.edges);
-    setValue('theme', config.interface?.theme);
-    setValue('colorStyle', config.interface?.colorStyle);
-    setValue('loader', config.interface?.loader ?? false);
-    setValue('locale', config.interface?.locale ?? Locale.en);
-  }, [
-    config.customer.contact?.email,
-    config.customer.contact?.phone.countryCode,
-    config.customer.contact?.phone.number,
-    config.customer.editable,
-    config.customer.id,
-    config.customer.names,
-    config.interface?.colorStyle,
-    config.interface?.edges,
-    config.interface?.loader,
-    config.interface?.locale,
-    config.interface?.theme,
-    config.invoice?.id,
-    config.merchant?.id,
-    config.operator.publicKey,
-    config.order.amount,
-    config.order.currency,
-    config.order.description,
-    config.order.id,
-    config.order.reference,
-    config.post?.url,
-    setValue,
-  ]);
-
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    let newConfig: Config = {
-      post: { url: data.post },
-      invoice: { id: data.invoice },
-      operator: { publicKey: data.key, hashString: 'Osama' },
-      merchant: { id: data.merchantId },
-      order: {
-        ...config.order,
-        amount: data.amount,
-        description: data.orderDescription,
-        id: data.orderId,
-        reference: data.orderReference,
-        currency: data.currency,
+    let newConfig: ConfigSettings = {
+      merchant: {
+        id: data.merchantId,
       },
+      redirect: data.redirect,
       customer: {
-        editable: data.editable,
-        id: data.customerId,
         names: [
           {
-            first: data.firstName,
-            last: data.lastName,
             middle: data.middleName,
-            lang: data.customerLocale,
+            last: data.lastName,
+            lang: data.nameLanguage,
+            first: data.firstName,
           },
         ],
         contact: {
-          email: data.customerEmail,
           phone: {
-            number: data.customerCountryCode,
-            countryCode: data.customerPhone,
+            number: data.customerPhone,
+            countryCode: data.customerCountryCode,
           },
+          email: data.customerEmail,
         },
+        id: data.customerId,
       },
       interface: {
-        locale: data.locale,
         edges: data.edges,
+        locale: data.locale,
+      },
+      reference: { transaction: data.transactionRef, order: data.orderId },
+      metadata: data.metadata,
+      post: { url: data.post },
+      transaction: {
+        amount: data.amount,
+        currency: data.currency,
+      },
+      androidOperator: {
+        hashString: '',
+        publicKey: data.androidKey,
+      },
+      iOSOperator: {
+        hashString: '',
+        publicKey: data.iOSKey,
       },
     };
+
     setConfig(newConfig);
     navigation.pop();
   };
@@ -156,6 +90,7 @@ function ConfigScreen({ route, navigation }: Props) {
       name: string,
       title: string,
       isRequired: boolean,
+      defaultValue: string,
       keyboardType?: KeyboardTypeOptions
     ) => {
       return (
@@ -164,13 +99,15 @@ function ConfigScreen({ route, navigation }: Props) {
           <Controller
             control={control}
             name={name}
+            defaultValue={defaultValue}
             render={({ field: { onChange, value } }) => (
               <View style={styles.textBox}>
                 <TextInput
                   keyboardType={keyboardType ?? 'default'}
                   style={styles.text}
                   placeholder={title}
-                  defaultValue={value}
+                  value={value}
+                  defaultValue={defaultValue}
                   onChangeText={(v) => onChange(v)}
                 />
               </View>
@@ -191,31 +128,31 @@ function ConfigScreen({ route, navigation }: Props) {
     [control, errors]
   );
 
-  const renderSwitch = useCallback(
-    (name: string, title: string) => {
-      return (
-        <View>
-          <Text style={{ marginVertical: 10 }}>{title}</Text>
-          <Controller
-            control={control}
-            name={name}
-            defaultValue={false}
-            render={({ field: { onChange, value } }) => {
-              return (
-                <Switch
-                  value={value}
-                  onValueChange={(val: boolean) => {
-                    onChange(val);
-                  }}
-                />
-              );
-            }}
-          />
-        </View>
-      );
-    },
-    [control]
-  );
+  // const renderSwitch = useCallback(
+  //   (name: string, title: string) => {
+  //     return (
+  //       <View>
+  //         <Text style={{ marginVertical: 10 }}>{title}</Text>
+  //         <Controller
+  //           control={control}
+  //           name={name}
+  //           defaultValue={false}
+  //           render={({ field: { onChange, value } }) => {
+  //             return (
+  //               <Switch
+  //                 value={value}
+  //                 onValueChange={(val: boolean) => {
+  //                   onChange(val);
+  //                 }}
+  //               />
+  //             );
+  //           }}
+  //         />
+  //       </View>
+  //     );
+  //   },
+  //   [control]
+  // );
 
   const renderList = useCallback(
     ({
@@ -246,8 +183,13 @@ function ConfigScreen({ route, navigation }: Props) {
             }}
             control={control}
             name={name}
-            defaultValue={false}
+            defaultValue={defaultOption}
             render={({ field: { onChange, value } }) => {
+              console.log(
+                '🚀 ~ file: ConfigScreen.tsx:193 ~ ConfigScreen ~ value:',
+                value
+              );
+
               return (
                 <SelectList
                   setSelected={(val: any) => {
@@ -276,8 +218,25 @@ function ConfigScreen({ route, navigation }: Props) {
     <SafeAreaView style={styles.safeArea}>
       <ScrollView style={[styles.container]}>
         <View style={styles.container}>
-          {renderTextInput('key', 'publicKey', true)}
-          {renderTextInput('amount', 'Amount', true, 'numeric')}
+          {renderTextInput(
+            'iOSKey',
+            'iOS Key',
+            true,
+            configState.iOSOperator.publicKey
+          )}
+          {renderTextInput(
+            'androidKey',
+            'Android Key',
+            true,
+            configState.androidOperator.publicKey
+          )}
+          {renderTextInput(
+            'amount',
+            'Amount',
+            true,
+            configState.transaction.amount,
+            'numeric'
+          )}
           {renderList({
             name: 'currency',
             title: 'Currency',
@@ -286,87 +245,114 @@ function ConfigScreen({ route, navigation }: Props) {
               value: item,
             })),
             isRequired: true,
-            defaultOption: config.order.currency as string,
+            defaultOption: configState.transaction.currency as string,
           })}
-
           <View style={{ height: 10 }}></View>
-
-          {renderList({
-            name: 'customerLocale',
-            title: 'Customer Locale',
-            items: Object.values(Locale).map((item) => ({
-              key: item,
-              value: item,
-            })),
-            isRequired: true,
-            defaultOption:
-              config.customer.names !== undefined
-                ? (config.customer.names[0]?.lang as string)
-                : '',
-          })}
-          {renderTextInput('nameOnCard', 'Name On Card', true)}
-          {renderSwitch('editable', 'Editable')}
-          {renderTextInput('customerId', 'customer Id', false)}
-          {renderTextInput('firstName', 'First Name', true)}
-          {renderTextInput('middleName', 'Middle Name', true)}
-          {renderTextInput('lastName', 'Last Name', true)}
-          {renderTextInput('customerPhone', 'Customer Phone', true)}
           {renderTextInput(
-            'customerCountryCode',
-            'Customer Country Code',
-            true
+            'merchantId',
+            'Merchant Id',
+            false,
+            configState.merchant.id
           )}
-          {renderTextInput('customerEmail', 'Customer Email', true)}
-          {renderTextInput('merchantId', 'Merchant Id', false)}
-          {renderTextInput('post', 'post url', false)}
-          {renderTextInput('invoice', 'invoice Id', false)}
-          {renderTextInput('orderDescription', 'Order Description', false)}
-          {renderTextInput('orderId', 'Order Id', false)}
-          {renderTextInput('orderReference', 'Order Reference', false)}
+          {renderTextInput('post', 'post url', false, config.post.url)}
+          {renderTextInput('metadata', 'meta data', false, config.metadata)}
+          {renderTextInput(
+            'transactionRef',
+            'transaction Ref',
+            false,
+            configState.reference.transaction
+          )}
+          {renderTextInput(
+            'orderId',
+            'transaction order',
+            false,
+            configState.reference.order
+          )}
 
-          {renderList({
-            name: 'colorStyle',
-            title: 'color Style',
-            items: Object.values(ColorStyle).map((item) => ({
-              key: item,
-              value: item,
-            })),
-            isRequired: true,
-            defaultOption: config.interface?.colorStyle as string,
-          })}
-
-          {renderList({
-            name: 'locale',
-            title: 'Local',
-            items: Object.values(Locale).map((item) => ({
-              key: item,
-              value: item,
-            })),
-            isRequired: true,
-            defaultOption: config.interface?.locale as string,
-          })}
           {renderList({
             name: 'edges',
-            title: 'Edges',
+            title: 'edges',
             items: Object.values(Edges).map((item) => ({
               key: item,
               value: item,
             })),
             isRequired: true,
-            defaultOption: config.interface?.edges as string,
+            defaultOption: configState.interface.edges as string,
           })}
+          <View style={{ height: 10 }}></View>
+
           {renderList({
-            name: 'theme',
-            title: 'Theme',
-            items: Object.values(Theme).map((item) => ({
+            name: 'locale',
+            title: 'locale',
+            items: Object.values(Locale).map((item) => ({
               key: item,
               value: item,
             })),
             isRequired: true,
-            defaultOption: config.interface?.theme as string,
+            defaultOption: configState.interface.locale as string,
           })}
 
-          {renderSwitch('loader', 'loader')}
+          <View style={{ height: 10 }}></View>
+
+          {renderTextInput(
+            'customerId',
+            'customer Id',
+            false,
+            configState.customer.id ?? ''
+          )}
+          {renderTextInput(
+            'firstName',
+            'First Name',
+            true,
+            configState.customer.names?.[0]?.first ?? ''
+          )}
+          {renderTextInput(
+            'middleName',
+            'Middle Name',
+            true,
+            configState.customer.names?.[0]?.middle ?? ''
+          )}
+          {renderTextInput(
+            'lastName',
+            'Last Name',
+            true,
+            configState.customer.names?.[0]?.last ?? ''
+          )}
+          {renderTextInput(
+            'customerPhone',
+            'Customer Phone',
+            true,
+            configState.customer.contact?.phone.number ?? ''
+          )}
+          {renderTextInput(
+            'customerCountryCode',
+            'Customer Country Code',
+            true,
+            configState.customer.contact?.phone.countryCode ?? ''
+          )}
+          {renderTextInput(
+            'customerEmail',
+            'Customer Email',
+            true,
+            configState.customer.contact?.email ?? ''
+          )}
+          {renderList({
+            name: 'nameLanguage',
+            title: 'Name Language',
+            items: Object.values(Locale).map((item) => ({
+              key: item,
+              value: item,
+            })),
+            isRequired: true,
+            defaultOption: configState.customer.names?.[0]?.lang ?? '',
+          })}
+          <View style={{ height: 10 }}></View>
+          {renderTextInput(
+            'redirect',
+            'redirect url',
+            false,
+            configState.redirect
+          )}
         </View>
         <TouchableOpacity
           style={styles.button}

@@ -7,7 +7,7 @@ import {
   View,
   type NativeSyntheticEvent,
 } from 'react-native';
-import type { Config } from './models';
+import type { ConfigSettings, Operator } from './models';
 
 const LINKING_ERROR =
   `The package 'benefit-pay-react-native' doesn't seem to be linked. Make sure: \n\n` +
@@ -28,7 +28,7 @@ export const BenefitPayReactNativeView =
 
 export interface IBenefitPayViewProps {
   style: ViewStyle;
-  config: Config;
+  config: ConfigSettings;
   onError: (data: Object) => void;
   onSuccess: (data: Object) => void;
   onOrderCreated: (data: Object) => void;
@@ -39,7 +39,11 @@ export interface IBenefitPayViewProps {
 }
 export interface IBenefitPayViewNativeProps {
   style: ViewStyle;
-  config: Config;
+  config: Omit<ConfigSettings, 'iOSOperator' | 'androidOperator'> & {
+    paymentMethod: string;
+    scheme: string;
+    operator: Operator;
+  };
 
   onCanceledCallback: () => void;
   onSuccessCallback: ({
@@ -114,6 +118,19 @@ function BenefitPayView({
     onChargeCreated(data);
   };
 
+  const {
+    iOSOperator,
+    androidOperator,
+    ...platformIndependentBenefitPayConfig
+  } = config;
+
+  const benefitPayConfig = {
+    ...platformIndependentBenefitPayConfig,
+    paymentMethod: 'benefitpay',
+    scheme: 'charge',
+    operator: Platform.OS === 'ios' ? iOSOperator : androidOperator,
+  };
+
   return (
     <View
       style={{
@@ -124,7 +141,7 @@ function BenefitPayView({
     >
       <BenefitPayReactNativeView
         style={{ ...style, flex: 1, height: 50 }}
-        config={config}
+        config={benefitPayConfig}
         onErrorCallback={handleOnError}
         onSuccessCallback={handleOnSuccess}
         onOrderCreatedCallback={handleOnOrderCreated}

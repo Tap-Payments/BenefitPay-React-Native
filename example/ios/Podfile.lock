@@ -1,9 +1,9 @@
 PODS:
-  - benefit-pay-react-native (0.1.0):
-    - BenefitPay-iOS (= 0.0.5)
+  - benefit-pay-react-native (0.1.4):
+    - BenefitPay-iOS (= 1.0.0)
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
-  - BenefitPay-iOS (0.0.5):
+  - BenefitPay-iOS (1.0.0):
     - Robin
     - SharedDataModels-iOS
     - SwiftyRSA
@@ -655,8 +655,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  benefit-pay-react-native: 199b6e393fc5d9479b7cc229771097f6cace92a9
-  BenefitPay-iOS: a1e80ff3e14547f39fe5af10559ec69af62e3f41
+  benefit-pay-react-native: 6ff0d573bbf271c215018da5265d7613a7286086
+  BenefitPay-iOS: bdb615e8c127e5545bcddacf79f7b26ecc5f55ca
   boost: 57d2868c099736d80fcd648bf211b4431e51a558
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   DoubleConversion: 5189b271737e1565bdce30deb4a08d647e3f5f54
@@ -717,6 +717,6 @@ SPEC CHECKSUMS:
   Yoga: 3efc43e0d48686ce2e8c60f99d4e6bd349aff981
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 2cd073346a0cdd95e5c2a7d7d442432a7ba7e176
+PODFILE CHECKSUM: 05c6cb52b43c62b82a6bac2bf05b181e37b33bd9
 
-COCOAPODS: 1.15.2
+COCOAPODS: 1.16.2
