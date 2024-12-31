@@ -1,4 +1,4 @@
-package com.benefitpayreactnativeexample;
+package tap.BenefitPayExampleApp;
 
 import android.app.Application;
 import com.facebook.react.PackageList;

@@ -73,9 +73,9 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.benefitpayreactnativeexample"
+    namespace "tap.BenefitPayExampleApp"
     defaultConfig {
-        applicationId "com.benefitpayreactnativeexample"
+        applicationId "tap.BenefitPayExampleApp"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

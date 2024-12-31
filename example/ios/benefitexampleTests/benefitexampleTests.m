@@ -7,11 +7,11 @@
 #define TIMEOUT_SECONDS 600
 #define TEXT_TO_LOOK_FOR @"Welcome to React"
 
-@interface BenefitPayReactNativeExampleTests : XCTestCase
+@interface benefitexampleTests : XCTestCase
 
 @end
 
-@implementation BenefitPayReactNativeExampleTests
+@implementation benefitexampleTests
 
 - (BOOL)findSubviewInView:(UIView *)view matching:(BOOL (^)(UIView *view))test
 {
