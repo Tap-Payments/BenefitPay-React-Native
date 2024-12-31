@@ -1,6 +1,6 @@
 {
   "name": "benefit-pay-react-native",
-  "version": "0.1.4",
+  "version": "1.0.0",
   "description": "benefit-pay react native wrapper",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
