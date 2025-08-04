@@ -53,6 +53,7 @@ function HomeScreen({ navigation }: Props) {
     transaction: {
       amount: '1',
       currency: TapCurrencyCode.BHD,
+      autoDismiss: true,
     },
     androidOperator: {
       hashString: '',

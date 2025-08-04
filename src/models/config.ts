@@ -47,6 +47,7 @@ interface Post {
 interface Transaction {
   amount: string;
   currency: TapCurrencyCode;
+  autoDismiss?: boolean;
 }
 
 export interface Operator {
