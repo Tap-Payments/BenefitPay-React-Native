@@ -133,8 +133,5 @@ extension BenefitPayReactNativeView: PayButtonDelegate {
         }
         onChargeCreatedCallback(["data": data])
     }
-    
-    
-    
 }
 

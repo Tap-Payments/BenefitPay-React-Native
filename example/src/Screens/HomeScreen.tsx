@@ -1,12 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import * as React from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import type { RootStackParamList } from './Screens.types';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useState } from 'react';
@@ -16,6 +10,7 @@ import BenefitPayView, {
   TapCurrencyCode,
   type ConfigSettings,
 } from 'benefit-pay-react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'HomeScreen'>;
 
@@ -91,7 +86,6 @@ function HomeScreen({ navigation }: Props) {
               )} \n =====onSuccessEnd===== \n`
             );
           }}
-          // eslint-disable-next-line react-native/no-inline-styles
           style={{ width: '100%' }}
           config={config}
           onReady={() => {

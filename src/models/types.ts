@@ -5,12 +5,13 @@ export type CamelToSnakeCase<S extends string> =
         : ''}${Lowercase<T>}${CamelToSnakeCase<U>}`
     : S;
 
-export type CamelKeysToSnakeCase<T> = T extends Array<infer U>
-  ? CamelKeysToSnakeCase<U>[]
-  : T extends object
-  ? {
-      [K in keyof T as CamelToSnakeCase<K & string>]: CamelKeysToSnakeCase<
-        T[K]
-      >;
-    }
-  : T;
+export type CamelKeysToSnakeCase<T> =
+  T extends Array<infer U>
+    ? CamelKeysToSnakeCase<U>[]
+    : T extends object
+      ? {
+          [K in keyof T as CamelToSnakeCase<K & string>]: CamelKeysToSnakeCase<
+            T[K]
+          >;
+        }
+      : T;

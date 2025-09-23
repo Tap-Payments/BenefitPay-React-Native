@@ -42,7 +42,10 @@ class BenefitPayReactNativeViewManager : SimpleViewManager<View>() {
   @ReactProp(name = "config")
   fun setConfig(view: View, config: ReadableMap) {
     print(config.toString())
-    BeneiftPayConfiguration.configureWithTapBenfitPayDictionaryConfiguration(view.context, customView ,config.toHashMap(), object :
+    // Filter out null values to match expected HashMap<String, Any> type
+    val configMap = config.toHashMap().filterValues { it != null } as HashMap<String, Any>
+    Log.d("BenefitPay", "Config parsed: $configMap")
+    BeneiftPayConfiguration.configureWithTapBenfitPayDictionaryConfiguration(view.context, customView, configMap, object :
       TapBenefitPayStatusDelegate {
 
 
@@ -124,7 +127,7 @@ class BenefitPayReactNativeViewManager : SimpleViewManager<View>() {
       }
 
 
-     
+
 
       override fun onBenefitPaySuccess(data: String) {
         val event = Arguments.createMap().apply {

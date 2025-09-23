@@ -1,11 +1,10 @@
-import React, { useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import {
   StyleSheet,
   TextInput,
   Text,
   View,
   TouchableOpacity,
-  SafeAreaView,
   ScrollView,
   type KeyboardTypeOptions,
 } from 'react-native';
@@ -24,6 +23,7 @@ import {
   TapCurrencyCode,
   type ConfigSettings,
 } from 'benefit-pay-react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ConfigScreen'>;
 
@@ -128,32 +128,6 @@ function ConfigScreen({ route, navigation }: Props) {
     [control, errors]
   );
 
-  // const renderSwitch = useCallback(
-  //   (name: string, title: string) => {
-  //     return (
-  //       <View>
-  //         <Text style={{ marginVertical: 10 }}>{title}</Text>
-  //         <Controller
-  //           control={control}
-  //           name={name}
-  //           defaultValue={false}
-  //           render={({ field: { onChange, value } }) => {
-  //             return (
-  //               <Switch
-  //                 value={value}
-  //                 onValueChange={(val: boolean) => {
-  //                   onChange(val);
-  //                 }}
-  //               />
-  //             );
-  //           }}
-  //         />
-  //       </View>
-  //     );
-  //   },
-  //   [control]
-  // );
-
   const renderList = useCallback(
     ({
       name,
@@ -173,7 +147,7 @@ function ConfigScreen({ route, navigation }: Props) {
     }) => {
       return (
         <View>
-          <Text style={{ marginVertical: 10 }}>{title}</Text>
+          <Text style={styles.listTitle}>{title}</Text>
           <Controller
             rules={{
               required: {
@@ -247,7 +221,7 @@ function ConfigScreen({ route, navigation }: Props) {
             isRequired: true,
             defaultOption: configState.transaction.currency as string,
           })}
-          <View style={{ height: 10 }}></View>
+          <View style={styles.spacer} />
           {renderTextInput(
             'merchantId',
             'Merchant Id',
@@ -279,7 +253,7 @@ function ConfigScreen({ route, navigation }: Props) {
             isRequired: true,
             defaultOption: configState.interface.edges as string,
           })}
-          <View style={{ height: 10 }}></View>
+          <View style={styles.spacer} />
 
           {renderList({
             name: 'locale',
@@ -292,7 +266,7 @@ function ConfigScreen({ route, navigation }: Props) {
             defaultOption: configState.interface.locale as string,
           })}
 
-          <View style={{ height: 10 }}></View>
+          <View style={styles.spacer} />
 
           {renderTextInput(
             'customerId',
@@ -346,7 +320,7 @@ function ConfigScreen({ route, navigation }: Props) {
             isRequired: true,
             defaultOption: configState.customer.names?.[0]?.lang ?? '',
           })}
-          <View style={{ height: 10 }}></View>
+          <View style={styles.spacer} />
           {renderTextInput(
             'redirect',
             'redirect url',
@@ -397,6 +371,9 @@ const styles = StyleSheet.create({
   errorText: {
     color: 'red',
   },
+  title: {
+    marginVertical: 10,
+  },
   dropdown: {
     marginVertical: 10,
   },
@@ -413,6 +390,12 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'white',
     alignSelf: 'center',
+  },
+  listTitle: {
+    marginVertical: 10,
+  },
+  spacer: {
+    height: 10,
   },
 });
 
