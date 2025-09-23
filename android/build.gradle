@@ -74,7 +74,7 @@ def kotlin_version = getExtOrDefault("kotlinVersion")
 dependencies {
   implementation "com.facebook.react:react-android"
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-  implementation 'com.github.Tap-Payments:BenefitPay-Android:1.0.3.9'
+  implementation 'com.github.Tap-Payments:BenefitPay-Android:1.0.3.10'
   implementation 'com.intuit.sdp:sdp-android:1.1.1'
   implementation 'com.squareup.retrofit2:retrofit:2.9.0'
   implementation 'com.squareup.okhttp3:logging-interceptor:4.10.0'
