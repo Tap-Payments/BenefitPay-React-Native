@@ -149,7 +149,7 @@
     ]
   },
   "create-react-native-library": {
-    "type": "view", 
+    "type": "view",
     "languages": "kotlin-objc"
   }
 }
